@@ -51,9 +51,23 @@
                        (label "Use Keyboard Input")
                        [callback ( lambda (button event)
                      (if (keyCheck-State)
-                        (controller "Keyboard input enabled.")
-                        (controller "Keyboard input disabled.")))]
-                       (value #t)))
+                        (begin(controller "Keyboard input enabled.")
+                              (send keyInput show #t)
+                              (send keyInput enable #t)
+                              (send keyInput focus))
+                        (begin(controller "Keyboard input disabled.")
+                              (send keyInput show #f)
+                              (send keyInput enable #f))))]
+                      (value #f)))
+
+(define keyInput (new text-field% [parent leftPanel]
+                       [label ""]
+                       [min-height 0]
+                       [callback (lambda (text event)
+                                   (begin(display (myGetText keyInput))
+                                         (newline)
+                                         (send keyInput set-value "")))]
+                       [enabled #f]))
 
 (define currentSounds (new group-box-panel% [parent leftPanel]
                        [label "Current Sounds"]
@@ -115,6 +129,7 @@
                      (controller (string-append "User selected " (radio-check note-box))))]))
 
 ; Show the frame by calling its show method
+(send keyInput show #f)
 (send mainWindow show #t)
 
 ;***********************************************************************************************
