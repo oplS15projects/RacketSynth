@@ -4,8 +4,6 @@
 (require racket/include)
 (require rsound)
 
-(include "RacketSynthControl.rkt")
-
 ; Make a frame by instantiating the frame% class
 (define mainWindow (new frame% [label "RacketSynth"]
                                [style (list 'no-resize-border)]))
