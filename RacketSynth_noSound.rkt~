@@ -2,7 +2,7 @@
 
 (require racket/gui/base)
 (require racket/include)
-;(require rsound)
+(require rsound)
 
 ; Make a frame by instantiating the frame% class
 (define mainWindow (new frame% [label "RacketSynth"]
@@ -41,8 +41,7 @@
                     (parent buttonPanel)
                     (label "Stop Sound")
                     [callback ( lambda (check-box event)
-                      (display "stop")
-                                 )]))
+                      (stop))]))
 
 (define (keyCheck-State) (send keyboardCheck-Box get-value))
 (define keyboardCheck-Box (new check-box%
@@ -158,31 +157,29 @@
 
 
 (define (get-wave-type)
-  (display "get-wave-type"))
-  ;(cond ((equal? (radio-check wave-box) "Sine Wave")     sine-wave)
-   ;     ((equal? (radio-check wave-box) "Sawtooth Wave") sawtooth-wave)
-    ;    ((equal? (radio-check wave-box) "Square Wave")   square-wave)
-     ;   ((equal? (radio-check wave-box) "Pulse Wave")    sine-wave)))
+  
+  (cond ((equal? (radio-check wave-box) "Sine Wave")     sine-wave)
+        ((equal? (radio-check wave-box) "Sawtooth Wave") sawtooth-wave)
+        ((equal? (radio-check wave-box) "Square Wave")   square-wave)
+        ((equal? (radio-check wave-box) "Pulse Wave")    sine-wave)))
 
-;(define my-pulse-wave 
- ; (lambda (x)
-  ;(pulse-wave 1 x)))
+(define my-pulse-wave 
+  (lambda (x)
+  (pulse-wave 1 x)))
 
 
 (define (my-play freq vol time)
-  (display "my-play")
   
-  ;(if (and (< freq 1721)(< 149 freq))
-  ;(let ([signal (network ()
-   ;               [a <= (get-wave-type) freq]
-    ;              [out = (* .1 vol a)])]) 
-    ;(signal-play signal)
+  (if (and (< freq 1721)(< 149 freq))
+  (let ([signal (network ()
+                  [a <= (get-wave-type) freq]
+                  [out = (* .1 vol a)])]) 
+    (signal-play signal)
     ;(sleep time)
     ;(stop)
-    ;)
-    ;(display "Frequency out of range, must be between 150 and 1720 Hz.")
-;  )
-)
+    )
+    (display "Frequency out of range, must be between 150 and 1720 Hz.")
+  ))
   
   
 
