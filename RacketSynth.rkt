@@ -4,6 +4,8 @@
 (require racket/include)
 (require rsound)
 
+(define currHz 'freq)
+
 ; Make a frame by instantiating the frame% class
 (define mainWindow (new frame% [label "RacketSynth"]
                                [style (list 'no-resize-border)]))
@@ -22,7 +24,20 @@
                        [label ""]
                        [min-height 80]))
 
+
+(define buttonMsg1 (new message% 
+                       [label "Notes will continue until the"]
+                       [parent leftPanel]))
+(define buttonMsg2 (new message% 
+                       [label "Stop-Sound button is pressed."]
+                       [parent leftPanel]))
+(define buttonMsg3 (new message% 
+                       [label "Build some chords!"]
+                       [parent leftPanel]))
+
 (define buttonPanel (new horizontal-panel% [parent leftPanel]))
+
+
 
 (define myGetText 
   (lambda (thisText)
@@ -44,32 +59,51 @@
                       (stop))]))
 
 (define (keyCheck-State) (send keyboardCheck-Box get-value))
-(define keyboardCheck-Box (new check-box%
-                       (parent leftPanel)
-                       (label "Use Keyboard Input")
-                       [callback ( lambda (button event)
-                     (if (keyCheck-State)
+
+
+(define (setKeyInput bool)
+  (if bool
                         (begin(controller "Keyboard input enabled.")
                               (send keyInput show #t)
                               (send keyInput enable #t)
                               (send keyInput focus))
                         (begin(controller "Keyboard input disabled.")
                               (send keyInput show #f)
-                              (send keyInput enable #f))))]
-                      (value #f)))
+                              (send keyInput enable #f)
+                              (send keyboardCheck-Box set-value #f) )))
+  
+  
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define keyInput (new text-field% [parent leftPanel]
                        [label ""]
                        [min-height 0]
                        [callback (lambda (text event)
-                                   (begin(display (myGetText keyInput))
-                                         (newline)
+                                   (begin;(display (myGetText keyInput))
+                                         ;(newline)
+                                         (keySound (myGetText keyInput))
                                          (send keyInput set-value "")))]
                        [enabled #f]))
 
+(define keyboardCheck-Box (new check-box%
+                       (parent leftPanel)
+                       (label "Use Keyboard Input")
+                       [callback ( lambda (button event)
+                                 (setKeyInput (keyCheck-State)))]
+                      (value #f)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 (define currentSounds (new group-box-panel% [parent leftPanel]
                        [label "Current Sounds"]
-                       [min-height 165]))
+                       [min-height 145]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 
 (define notePanel (new group-box-panel% [parent rightPanel]
                        [label "Notes"]
@@ -100,12 +134,16 @@
                                       "Notes"))
                        [style (list 'horizontal)]
                        [callback ( lambda (button event)
+                                    (setKeyInput #f)
                      (controller (string-append "User selected " (radio-check freq-box))))]))
 
 (define freq-field (new text-field%
                         (label "Enter a frequency:")
                         (parent freqPanel)
-                        (init-value "440")))
+                        (init-value "440")
+                        [callback (lambda (text event) 
+                                    (setKeyInput #f)
+                                    (send freq-box set-selection 0))]))
 
 
 (define note-box (new radio-box%
@@ -124,7 +162,9 @@
                                       "G"
                                       "Ab"))
                        [callback ( lambda (button event)
-                     (controller (string-append "User selected " (radio-check note-box))))]))
+                                   (send freq-box set-selection 1)
+                                   (setKeyInput #f)
+                                   (controller (string-append "User selected " (radio-check note-box))))]))
 
 ; Show the frame by calling its show method
 (send keyInput show #f)
@@ -151,7 +191,8 @@
         ((equal? "F" note)  (set! note-freq 349.23))
         ((equal? "Gb" note)   (set! note-freq 369.99))
         ((equal? "G" note)  (set! note-freq 392))
-        ((equal? "Ab" note)   (set! note-freq 415.30)))
+        ((equal? "Ab" note)   (set! note-freq 415.30))
+        ((equal? "A+" note)   (set! note-freq 440)))
   
   (my-play note-freq vol time))
 
@@ -174,14 +215,35 @@
   (let ([signal (network ()
                   [a <= (get-wave-type) freq]
                   [out = (* .1 vol a)])]) 
-    (signal-play signal)
-    ;(sleep time)
-    ;(stop)
-    )
-    (display "Frequency out of range, must be between 150 and 1720 Hz.")
-  ))
+    (signal-play signal))
+    (display "Frequency out of range, must be between 150 and 1720 Hz.")))
   
-  
+;;;;;;;;;;;;;;;;;;;;;;
+ (define (keySound char)
+   (stop)
+   ;(display char)
+   
+   (cond ((equal? "a" char) (play-Note "A" 1 2))
+         ((equal? "w" char) (play-Note "Bb" 1 2))
+         ((equal? "s" char) (play-Note "B" 1 2))
+         ((equal? "e" char) (play-Note "C" 1 2))
+         ((equal? "d" char) (play-Note "Db" 1 2))
+         ((equal? "f" char) (play-Note "D" 1 2))
+         ((equal? "t" char) (play-Note "Eb" 1 2))
+         ((equal? "g" char) (play-Note "E" 1 2))
+         ((equal? "y" char) (play-Note "F" 1 2))
+         ((equal? "h" char) (play-Note "Gb" 1 2))
+         ((equal? "u" char) (play-Note "G" 1 2))
+         ((equal? "j" char) (play-Note "Ab" 1 2))
+         ((equal? "k" char) (play-Note "A+" 1 2))
+         ((equal? " " char) (stop))
+         
+         
+         ))
+   
+   
+   
+   
 
  
 
