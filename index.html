@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>RacketSynth by oplS15projects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">RacketSynth</h1>
+      <h2 class="project-tagline">Easy to Use Synthesizer for Racket</h2>
+      <a href="https://github.com/oplS15projects/RacketSynth" class="btn">View on GitHub</a>
+      <a href="https://github.com/oplS15projects/RacketSynth/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/oplS15projects/RacketSynth/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="racketsynth" class="anchor" href="#racketsynth" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>RacketSynth</strong>
+</h1>
+
+<h2>
+<a id="easy-to-use-synthesizer-for-racket" class="anchor" href="#easy-to-use-synthesizer-for-racket" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Easy to Use Synthesizer for Racket</strong>
+</h2>
+
+<h2>
+<a id="authors" class="anchor" href="#authors" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Authors</strong>
+</h2>
+
+<p>David Lordan<br>
+Kevin Ornellas<br>
+Matthew Scheffelaar    </p>
+
+<h1>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Overview</strong>
+</h1>
+
+<p>RacketSynth is a module for Racket that creates an easy to use interface for creating sound using the Rsound and Racket GUI
+libraries. It accomplishes this by wrapping the complicated Rsound function with an easy to use GUI. </p>
+
+<p>Here is a screenshot of the GUI interface of Racket as of Friday, April 24th 2015</p>
+
+<h2>
+<a id="concepts-demonstrated" class="anchor" href="#concepts-demonstrated" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Concepts Demonstrated</strong>
+</h2>
+
+<ul>
+<li>
+<strong>Expressiveness</strong> is utilized in creating sounds with different waves forms.</li>
+<li>We have built an <strong>abstraction barrier</strong> between the user and the underlying
+implementation, allowing for ease-of-use by someone unfamiliar with coding.</li>
+<li> <strong>Symbolic data</strong> was referenced and used in the respective lists for the style property of GUI elements.</li>
+</ul>
+
+<h2>
+<a id="external-technology-and-libraries" class="anchor" href="#external-technology-and-libraries" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>External Technology and Libraries</strong>
+</h2>
+
+<p>We used the library Rsound, which can be downloaded via the package manager inside Dr.Racket
+/(provide screenshot of package manager open). Rsound allowed for playing We also used the GUI toolkit that's documentation
+is available <a href="http://docs.racket-lang.org/gui/index.html">here</a>, incorporating objects such as GUI message
+objects, radio boxes, button events wrapped in a lambda, panels, and more.  was used 
+(presumably) to test with function definitions contained in a separate file. </p>
+
+<p>(CL) The racket library <a href="http://docs.racket-lang.org/plot/index.html">plot</a> was used to create a sawtooth graph, which could be used as a label.
+(CL) ImageMagik was used in a Lubuntu environment to edit images that came from <a href="https://openclipart.org">openclipart.org</a>.</p>
+
+<h2>
+<a id="our-favorite-lines-of-code" class="anchor" href="#our-favorite-lines-of-code" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Our Favorite Lines of Code</strong>
+</h2>
+
+<h3>
+<a id="davids-favorite" class="anchor" href="#davids-favorite" aria-hidden="true"><span class="octicon octicon-link"></span></a>David's Favorite</h3>
+
+<p>(SN) Ask David for his favorite lines</p>
+
+<h3>
+<a id="stevens-favorite" class="anchor" href="#stevens-favorite" aria-hidden="true"><span class="octicon octicon-link"></span></a>Steven's Favorite</h3>
+
+<p>(SN) Ask Steven for his favorite line</p>
+
+<h3>
+<a id="kevins-favorite" class="anchor" href="#kevins-favorite" aria-hidden="true"><span class="octicon octicon-link"></span></a>Kevin's Favorite</h3>
+
+<p>(SN) RL</p>
+
+<h2>
+<a id="how-to-download-and-run" class="anchor" href="#how-to-download-and-run" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>How to Download and Run</strong>
+</h2>
+
+<p>Click [here](CL) to download the current version of RacketSynth.  RacketsSynth depends upon racket 6.1.1, which can be downloaded <a href="http://download.racket-lang.org/">here</a> and environment such as DrRacket, which is available to download. 
+(SN) Where does DrRacket come from again?</p>
+
+<p>Unzip RacketSynth.</p>
+
+<p>(CL) We may have a version of RacketSynth that relies on having a folder called images containing the relevant images as a sub-folder in the directory that contains the RacketSynth program.</p>
+
+<p>(CL) Then do you also have to unzip images subfolder in there? Depends on final way of storing it.
+You can either open the file (CL: What will be the name of the final file) directly if DrRacket is your default application for dealing Racket code, which has the terminal file extension .rkt 
+(SF) If time permits, put screen shot of selection here.</p>
+
+<p>Type in rsound, then click (CL) Where do you click?</p>
+
+<p>Once Rsound is installed, navigate back to the main menu and click the "Run" button.</p>
+
+<p>You can then select notes of different pitches and press the play button. You can also type in a frequency and produce a note at that pitch. If you want to disable the sound, you can hit the stop button.  You can also generate sound that follows a wave-like distribution for the sine wave. Once you are finished with the program, you can click the <strong>X</strong> in the upper-right-hand corner to exit the program.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/oplS15projects/RacketSynth">RacketSynth</a> is maintained by <a href="https://github.com/oplS15projects">oplS15projects</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
+
