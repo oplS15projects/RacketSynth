@@ -79,10 +79,8 @@
                        [label ""]
                        [min-height 0]
                        [callback (lambda (text event)
-                                   (begin;(display (myGetText keyInput))
-                                         ;(newline)
-                                         (keySound (myGetText keyInput))
-                                         (send keyInput set-value "")))]
+                                   (begin (keySound (myGetText keyInput))
+                                          (send keyInput set-value "")))]
                        [enabled #f]))
 
 (define keyboardCheck-Box (new check-box%
@@ -199,20 +197,18 @@
 
 
 (define (get-wave-type)
-  
   (cond ((equal? (radio-check wave-box) "Sine Wave")     sine-wave)
         ((equal? (radio-check wave-box) "Sawtooth Wave") sawtooth-wave)
         ((equal? (radio-check wave-box) "Square Wave")   square-wave)
         ((equal? (radio-check wave-box) "Pulse Wave")    sine-wave)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define my-pulse-wave 
   (lambda (x)
   (pulse-wave 1 x)))
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (my-play freq vol time)
-  
-  
   (if (<= numOfSounds 4)
   (begin
   (set! numOfSounds (+ 1 numOfSounds))
@@ -228,14 +224,9 @@
   
     (begin 
       (newline)
-      (display "Too many sounds!")))
+      (display "Too many sounds!"))))
   
-  
-  
-  
-  )
-  
-;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  (define (keySound char)
    (myStop)
    ;(display char)
@@ -253,14 +244,8 @@
          ((equal? "u" char) (play-Note "G" 1 2))
          ((equal? "j" char) (play-Note "Ab" 1 2))
          ((equal? "k" char) (play-Note "A+" 1 2))
-         ((equal? " " char) (myStop)))
+         ((equal? " " char) (myStop))))
    
-   
-   
-   
-   )
-   
-
 
 (define filler "                                                                     ")
 
@@ -283,6 +268,7 @@
                        [label filler]
                        [parent currentSounds]))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (define soundList '())
 ; Needs to list sounds
 
@@ -298,19 +284,12 @@
            ((= numOfSounds 5)(send currSound5 set-label (getSoundString freq)))
            ((= numOfSounds 6)(send currSound6 set-label (getSoundString freq))))))
 
+
 (define (getSoundString freq)
-  ;freq
-  (string-append "Now playing a " (radio-check wave-box) " at " (number->string freq) " hertz.")
+  (string-append "Now playing a " (radio-check wave-box) " at " (number->string freq) " hertz."))
   
-  )
-  
-  
-
-
-
+ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; Needs to remove sounds
-
  (define (myStop)
    (begin 
     (send currSound1 set-label filler)
@@ -322,8 +301,7 @@
      
      (set! soundList '())
      (set! numOfSounds 0)
-     (stop))
-   )
+     (stop)))
 
  
 
