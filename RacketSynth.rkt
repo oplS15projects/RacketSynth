@@ -56,7 +56,7 @@
                     (parent buttonPanel)
                     (label "Stop Sound")
                     [callback ( lambda (check-box event)
-                      (stop))]))
+                      (myStop))]))
 
 (define (keyCheck-State) (send keyboardCheck-Box get-value))
 
@@ -93,7 +93,6 @@
                       (value #f)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 
 (define currentSounds (new group-box-panel% [parent leftPanel]
@@ -169,6 +168,8 @@
 ; Show the frame by calling its show method
 (send keyInput show #f)
 (send mainWindow show #t)
+(define numOfSounds 0)
+
 
 ;***********************************************************************************************
 
@@ -178,7 +179,7 @@
 
 (define (play-Note note vol time)
   (define note-freq 0)
-  (display note)
+  ;(display note)
   
   (cond ((equal? "A" note)   (set! note-freq 220))
         ((equal? "Bb" note)  (set! note-freq 233.08))
@@ -211,16 +212,32 @@
 
 (define (my-play freq vol time)
   
+  
+  (if (<= numOfSounds 4)
+  (begin
+  (set! numOfSounds (+ 1 numOfSounds))
+  (addSound freq)
+  
   (if (and (< freq 1721)(< 149 freq))
   (let ([signal (network ()
                   [a <= (get-wave-type) freq]
                   [out = (* .1 vol a)])]) 
+    
     (signal-play signal))
     (display "Frequency out of range, must be between 150 and 1720 Hz.")))
   
+    (begin 
+      (newline)
+      (display "Too many sounds!")))
+  
+  
+  
+  
+  )
+  
 ;;;;;;;;;;;;;;;;;;;;;;
  (define (keySound char)
-   (stop)
+   (myStop)
    ;(display char)
    
    (cond ((equal? "a" char) (play-Note "A" 1 2))
@@ -236,14 +253,77 @@
          ((equal? "u" char) (play-Note "G" 1 2))
          ((equal? "j" char) (play-Note "Ab" 1 2))
          ((equal? "k" char) (play-Note "A+" 1 2))
-         ((equal? " " char) (stop))
-         
-         
-         ))
+         ((equal? " " char) (myStop)))
    
    
    
    
+   )
+   
+
+
+(define filler "                                                                     ")
+
+(define currSound1 (new message% 
+                       [label filler]
+                       [parent currentSounds]))
+(define currSound2 (new message% 
+                       [label filler]
+                       [parent currentSounds]))
+(define currSound3 (new message% 
+                       [label filler]
+                       [parent currentSounds]))
+(define currSound4 (new message% 
+                       [label filler]
+                       [parent currentSounds]))
+(define currSound5 (new message% 
+                       [label filler]
+                       [parent currentSounds]))
+(define currSound6 (new message% 
+                       [label filler]
+                       [parent currentSounds]))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define soundList '())
+; Needs to list sounds
+
+   (define (addSound freq)
+    (begin
+     (set! soundList (append soundList (list (number->string freq))))
+     (display soundList)
+     (newline)
+     (cond ((= numOfSounds 1)(send currSound1 set-label (getSoundString freq)))
+           ((= numOfSounds 2)(send currSound2 set-label (getSoundString freq)))
+           ((= numOfSounds 3)(send currSound3 set-label (getSoundString freq)))
+           ((= numOfSounds 4)(send currSound4 set-label (getSoundString freq)))
+           ((= numOfSounds 5)(send currSound5 set-label (getSoundString freq)))
+           ((= numOfSounds 6)(send currSound6 set-label (getSoundString freq))))))
+
+(define (getSoundString freq)
+  ;freq
+  (string-append "Now playing a " (radio-check wave-box) " at " (number->string freq) " hertz.")
+  
+  )
+  
+  
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Needs to remove sounds
+
+ (define (myStop)
+   (begin 
+    (send currSound1 set-label filler)
+    (send currSound2 set-label filler)
+    (send currSound3 set-label filler)
+    (send currSound4 set-label filler)
+    (send currSound5 set-label filler)
+    (send currSound6 set-label filler)
+     
+     (set! soundList '())
+     (set! numOfSounds 0)
+     (stop))
+   )
 
  
 
