@@ -12,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">RacketSynth</h1>
-      <h2 class="project-tagline">Easy to Use Synthesizer for Racket</h2>
+      <h2 class="project-tagline">Simple Synthesizer for Racket</h2>
       <a href="https://github.com/oplS15projects/RacketSynth" class="btn">View on GitHub</a>
       <a href="https://github.com/oplS15projects/RacketSynth/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/oplS15projects/RacketSynth/tarball/master" class="btn">Download .tar.gz</a>
@@ -40,7 +40,7 @@ Matthew Scheffelaar    </p>
 <strong>Overview</strong> <img src="http://i296.photobucket.com/albums/mm177/kevinseeker10/music_icon_OS_v1.2_zpsjaqugwd8.png" alt="Music_icon_v1.2">
 </h1>
 
-<p>RacketSynth is a module for Racket that creates an easy to use interface for creating sound using the Rsound and Racket GUI
+<p>RacketSynth is a module for Racket that creates an easy-to-use interface for creating sound using the Rsound and Racket GUI
 libraries. It accomplishes this by wrapping the complicated Rsound function with an easy to use GUI. </p>
 
 <p>Below is a screenshot of the GUI interface of Racket as of Sunday, April 26th 2015</p>
@@ -63,7 +63,11 @@ implementation, allowing for ease-of-use by someone unfamiliar with coding.</li>
 <a id="external-technology-and-libraries" class="anchor" href="#external-technology-and-libraries" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>External Technology and Libraries</strong>
 </h2>
 
-<p>We used the library Rsound, which can be downloaded via the package manager inside Dr.Racket. Rsound allows for playing various sounds.  We also used the GUI toolkit that's documentation is available <a href="http://docs.racket-lang.org/gui/index.html">here</a>, incorporating objects such as GUI message objects, radio boxes, button events wrapped in a lambda, panels, and more. &lt;racket/include&gt; was used to test with function definitions contained in a separate file. </p>
+<p>For our project we used the Rsound library, which can be downloaded via the package manager inside Dr.Racket. 
+Rsound allows for the creation and manipulation of sounds inside of Racket.  We also used the Racket GUI toolkit 
+to add common interface objects such as messages, radio boxes, buttons with callbacks, panels, 
+and more. The documentation for the Racket GUI toolkit is available <a href="http://docs.racket-lang.org/gui/index.html">here</a>.
+&lt;racket/include&gt; was used to incorporate external files containing test procedures.</p>
 
 <p>ImageMagik was used in a Lubuntu environment to edit images that came from <a href="https://openclipart.org">openclipart.org</a>.
 MS Paint was used to edit the screenshots used in this website.</p>
