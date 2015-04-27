@@ -79,8 +79,6 @@ objects, radio boxes, button events wrapped in a lambda, panels, and more.  was 
 <h3>
 <a id="davids-favorite" class="anchor" href="#davids-favorite" aria-hidden="true"><span class="octicon octicon-link"></span></a>David's Favorite</h3>
 
-<p>(SN) Ask David for his favorite lines</p>
-
 <p><code>[callback (lambda (text event)
                               (begin (keySound (myGetText keyInput))
                                           (send keyInput set-value "")))]</code></p>
@@ -90,7 +88,11 @@ objects, radio boxes, button events wrapped in a lambda, panels, and more.  was 
 <h3>
 <a id="stevens-favorite" class="anchor" href="#stevens-favorite" aria-hidden="true"><span class="octicon octicon-link"></span></a>Steven's Favorite</h3>
 
-<p>(SN) Ask Steven for his favorite line</p>
+<p><code>(if(equal? "Notes" (radio-check freq-box))
+                       (play-Note (radio-check note-box) 1 2)
+                       (my-play (string-&gt;number (myGetText freq-field)) .5 2)))]))</code></p>
+
+<p>This is the line of code that determines what kind of sounds is played. If the play note box is checked, then it will play the desired note. If it's not checked, it defaults to playing  the frequency that the user inputted into the text box.</p>
 
 <h3>
 <a id="kevins-favorite" class="anchor" href="#kevins-favorite" aria-hidden="true"><span class="octicon octicon-link"></span></a>Kevin's Favorite</h3>
