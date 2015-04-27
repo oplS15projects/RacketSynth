@@ -1,6 +1,6 @@
-# RacketSynth
-
 Website for this project is a available at [http://opls15projects.github.io/RacketSynth/](http://opls15projects.github.io/RacketSynth/)
+
+# RacketSynth
 
 Easy to use synthesizer for Racket
 
