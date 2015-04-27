@@ -67,10 +67,10 @@ implementation, allowing for ease-of-use by someone unfamiliar with coding.</li>
 /(provide screenshot of package manager open). Rsound allowed for playing We also used the GUI toolkit that's documentation
 is available <a href="http://docs.racket-lang.org/gui/index.html">here</a>, incorporating objects such as GUI message
 objects, radio boxes, button events wrapped in a lambda, panels, and more.  was used 
-(presumably) to test with function definitions contained in a separate file. </p>
+to test with function definitions contained in a separate file. </p>
 
-<p>(CL) The racket library <a href="http://docs.racket-lang.org/plot/index.html">plot</a> was used to create a sawtooth graph, which could be used as a label.
-(CL) ImageMagik was used in a Lubuntu environment to edit images that came from <a href="https://openclipart.org">openclipart.org</a>.</p>
+<p>ImageMagik was used in a Lubuntu environment to edit images that came from <a href="https://openclipart.org">openclipart.org</a>.
+MS Paint was used to edit the screenshots used in this website.</p>
 
 <h2>
 <a id="our-favorite-lines-of-code" class="anchor" href="#our-favorite-lines-of-code" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Our Favorite Lines of Code</strong>
@@ -102,6 +102,9 @@ objects, radio boxes, button events wrapped in a lambda, panels, and more.  was 
 <p><code>(define my-play-bitmap-1 (read-bitmap "./images/play_icon3.png"))
 (define playSound (new button% (parent buttonPanel (label my-play-bitmap-1))))</code></p>
 
+<p>It takes a PNG file, reads it in using the read-bitmap function, and then it is used later as a label to a button.
+However, this was not implemented in the current product.</p>
+
 <h2>
 <a id="how-to-download-and-run" class="anchor" href="#how-to-download-and-run" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>How to Download and Run</strong>
 </h2>
@@ -112,11 +115,7 @@ objects, radio boxes, button events wrapped in a lambda, panels, and more.  was 
 
 <p><img src="http://i296.photobucket.com/albums/mm177/kevinseeker10/windows_RS_DL_zpsjtsq0tav.png" alt="Downloads folder a on Windows 7 System"></p>
 
-<p>(CL) We may have a version of RacketSynth that relies on having a folder called images containing the relevant images as a sub-folder in the directory that contains the RacketSynth program.</p>
-
-<p>(CL) Then do you also have to unzip images subfolder in there? Depends on final way of storing it.
-You can either open the file (CL: What will be the name of the final file) directly if DrRacket is your default application for dealing Racket code, which has the terminal file extension .rkt 
-(SF) If time permits, put screen shot of selection here.</p>
+<p>You can open the file RacketSynth.rkt directly if DrRacket is your default application for dealing Racket code by going to the File menu, clicking "Open" then navigating and selecting RacketSynth.rkt .</p>
 
 <p><img src="http://i296.photobucket.com/albums/mm177/kevinseeker10/click_file_options_v1.2_zpsgl8keugc.png" alt="Selecting File in DrRacket">
 Once DrRacket is opened, click "File" in the upper-right-hand corner of the screen then click on the selection "Package Manager..." from the pull-down menu.</p>
