@@ -1,4 +1,7 @@
 # RacketSynth
+
+Website for this project is a available at [http://opls15projects.github.io/RacketSynth/](http://opls15projects.github.io/RacketSynth/)
+
 Easy to use synthesizer for Racket
 
 RacketSynth is a module for Racket that creates an easy to use interface for creating sound using the Rsound and Racket GUI
