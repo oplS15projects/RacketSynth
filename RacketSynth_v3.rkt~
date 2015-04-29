@@ -318,7 +318,7 @@
 ((equal? "z" char) (octave-shift 'down))
 ((equal? "x" char) (octave-shift 'up))
 ((equal? " " char) (myStop))))
-(define filler "                                                                  ")
+(define filler " ")
 (define currSound1 (new message%
 [label filler]
 [parent currentSounds]))
@@ -351,7 +351,6 @@
 ((= numOfSounds 4)(send currSound4 set-label (getSoundString freq)))
 ((= numOfSounds 5)(send currSound5 set-label (getSoundString freq)))
 ((= numOfSounds 6)(send currSound6 set-label (getSoundString freq))))))
-
 (define (getSoundString freq)
 (string-append "Now playing a " (radio-check wave-box) " at " (number->string freq) " hertz."))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
