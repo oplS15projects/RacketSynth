@@ -17,6 +17,10 @@
 (define rightPanel (new vertical-panel% [parent mainCont]))
 
 
+
+
+
+
 (define wavePanel (new group-box-panel% [parent leftPanel]
                        [label ""]))
 
@@ -25,17 +29,40 @@
                        [min-height 80]))
 
 
-(define buttonMsg1 (new message% 
-                       [label "Notes will continue until the"]
-                       [parent leftPanel]))
-(define buttonMsg2 (new message% 
-                       [label "Stop-Sound button is pressed."]
-                       [parent leftPanel]))
-(define buttonMsg3 (new message% 
-                       [label "Build some chords!"]
-                       [parent leftPanel]))
+(define freq-field (new text-field%
+                        (label "Enter a frequency:")
+                        (parent rightPanel)
+                        (init-value "440")
+                        [callback (lambda (text event) 
+                                    ;(setKeyInput #f)
+                                    (send freq-box set-selection 0))]))
 
-(define buttonPanel (new horizontal-panel% [parent leftPanel]))
+
+;(define buttonMsg1 (new message% 
+ ;                      [label "Notes will continue until the"]
+  ;                     [parent leftPanel]))
+;(define buttonMsg2 (new message% 
+ ;                      [label "Stop-Sound button is pressed."]
+  ;                     [parent leftPanel]))
+;(define buttonMsg3 (new message% 
+ ;                      [label "Build some chords!"]
+  ;                     [parent leftPanel]))
+
+
+(define pulseSlide (new slider%
+                        [label "Pulse Wave Duty-Cycle"]
+                        [parent leftPanel]
+                        [min-value 1]
+                        [max-value 100]))
+
+
+(define buttonPanel (new horizontal-panel% [parent rightPanel]))
+(define octavePanel (new horizontal-panel%
+                         (parent rightPanel)))
+
+(define octMsg (new message%
+                   [label "Current octave offset: 0"]
+                   [parent rightPanel]))
 
 
 
@@ -58,11 +85,11 @@
                     [callback ( lambda (check-box event)
                       (myStop))]))
 
-(define (keyCheck-State) (send keyboardCheck-Box get-value))
+;(define (keyCheck-State) (send keyboardCheck-Box get-value))
 
 
 (define (setKeyInput bool)
-  (if bool
+ (if bool
                         (begin(controller "Keyboard input enabled.")
                               (send keyInput show #t)
                               (send keyInput enable #t)
@@ -70,12 +97,13 @@
                         (begin(controller "Keyboard input disabled.")
                               (send keyInput show #f)
                               (send keyInput enable #f)
-                              (send keyboardCheck-Box set-value #f) )))
+                              ;(send keyboardCheck-Box set-value #f) 
+                              )))
   
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define keyInput (new text-field% [parent leftPanel]
+(define keyInput (new text-field% [parent rightPanel]
                        [label ""]
                        [min-height 0]
                        [callback (lambda (text event)
@@ -83,19 +111,34 @@
                                           (send keyInput set-value "")))]
                        [enabled #f]))
 
-(define keyboardCheck-Box (new check-box%
-                       (parent leftPanel)
-                       (label "Use Keyboard Input")
-                       [callback ( lambda (button event)
-                                 (setKeyInput (keyCheck-State)))]
-                      (value #f)))
+(define keyInputPanel (new horizontal-panel%
+                           (parent rightPanel)))
+
+;(define keyboardCheck-Box (new check-box%
+ ;                      (parent keyInputPanel)
+  ;                     (label "Use Keyboard Input")
+   ;                    [callback ( lambda (button event)
+    ;                             (setKeyInput (keyCheck-State))
+     ;                            (send sustainCheck-Box show (keyCheck-State))  
+      ;                           (cond ( (not(keyCheck-State)) (myStop)))
+                                    
+       ;                             )]
+        ;              (value #f)))
+
+(define sustainCheck-Box (new check-box%
+                              (parent keyInputPanel)
+                              (label "Allow multiple notes?")
+                              (value #f)))
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 (define currentSounds (new group-box-panel% [parent leftPanel]
                        [label "Current Sounds"]
-                       [min-height 145]))
+                       [min-height 345]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -122,25 +165,28 @@
                                       "Square Wave"
                                       "Pulse Wave"))  
                      [callback ( lambda (button event)
-                     (controller (string-append "User selected " (radio-check wave-box))))]))
+                                  (send pulseSlide show (equal? (radio-check wave-box) "Pulse Wave"))
+                                  (controller (string-append "User selected " (radio-check wave-box))))]))
 
 (define freq-box (new radio-box%
                        (label "")
                        (parent freqPanel)
                        (choices (list "Frequency"
+                                      "Keyboard"
                                       "Notes"))
-                       [style (list 'horizontal)]
+                       [style (list 'vertical)]
                        [callback ( lambda (button event)
-                                    (setKeyInput #f)
-                     (controller (string-append "User selected " (radio-check freq-box))))]))
+                                   ; (setKeyInput #f)
+                                    (updateGUI)
+                                    ;(controller (string-append "User selected " (radio-check freq-box)))
+                                    
+                                    )]))
 
-(define freq-field (new text-field%
-                        (label "Enter a frequency:")
-                        (parent freqPanel)
-                        (init-value "440")
-                        [callback (lambda (text event) 
-                                    (setKeyInput #f)
-                                    (send freq-box set-selection 0))]))
+
+
+
+
+
 
 
 (define note-box (new radio-box%
@@ -159,11 +205,106 @@
                                       "G"
                                       "Ab"))
                        [callback ( lambda (button event)
-                                   (send freq-box set-selection 1)
-                                   (setKeyInput #f)
+                                   (send freq-box set-selection 2)
+                                   ;(setKeyInput #f)
                                    (controller (string-append "User selected " (radio-check note-box))))]))
 
+
+
+(define octDown (new button%
+                   [label "Octave Down"]
+                   [parent octavePanel]
+                   [callback (lambda (button event)
+                               (octave-shift 'down)
+                               
+                               )]))
+
+(define octUp (new button%
+                   [label "Octave Up"]
+                   [parent octavePanel]
+                   [callback (lambda (button event)
+                               (octave-shift 'up)
+                               
+                               )]))
+
+(define octave 1)
+
+
+(define (octave-shift direction)
+  (if(equal? direction 'up)
+     (cond ((equal? octave .5) (begin(set! octave 1)
+                                                                (send octMsg set-label "Current octave offset: 0")))
+                                     ((equal? octave 1) (begin(set! octave 2)
+                                                                (send octMsg set-label "Current octave offset: +1"))))
+     (cond ((equal? octave 2) (begin(set! octave 1)
+                                                                (send octMsg set-label "Current octave offset: 0")))
+                                     ((equal? octave 1) (begin(set! octave .5)
+                                                                (send octMsg set-label "Current octave offset: -1"))))
+     ))
+
+
+
+(define (updateGUI)
+  (begin
+  (display "update")
+  (myStop)
+  (set! octave 1)
+  (cond ((equal? (radio-check freq-box) "Frequency") (begin
+                                                       (send notePanel show #f)
+                                                       (send freq-field show #t)
+                                                       (setKeyInput #f)
+                                                       (send sustainCheck-Box show #f) 
+                                                       (send buttonPanel show #t)
+                                                       (send octavePanel show #f)
+                                                       (send octMsg show #f)
+                                                      
+                                                      ))
+        ((equal? (radio-check freq-box) "Notes") (begin
+                                                       (send notePanel show #t)
+                                                       (send freq-field show #f)
+                                                       (setKeyInput #f)
+                                                       (send sustainCheck-Box show #f) 
+                                                       (send buttonPanel show #t)
+                                                       (send octavePanel show #t)
+                                                       (send octMsg show #t)
+                                                       
+                                                      
+                                                      )
+         
+         
+         )
+        ((equal? (radio-check freq-box) "Keyboard") (begin
+                                                       (send notePanel show #f)
+                                                       (send freq-field show #f)
+                                                       (setKeyInput #t)
+                                                       (send sustainCheck-Box show #t)
+                                                       (send buttonPanel show #f)
+                                                       (send octavePanel show #t)
+                                                       (send octMsg show #t)
+                                                                                                           
+                                 
+                                                       
+                                                      ))
+        
+        
+        
+        
+        
+        
+        
+        ))
+  
+  
+  
+  )
+
+
 ; Show the frame by calling its show method
+(send sustainCheck-Box show #f)
+(send octMsg show #f)
+(send octavePanel show #f)
+(send notePanel show #f)
+(send pulseSlide show #f)
 (send keyInput show #f)
 (send mainWindow show #t)
 (define numOfSounds 0)
@@ -191,7 +332,18 @@
         ((equal? "Gb" note)   (set! note-freq 369.99))
         ((equal? "G" note)  (set! note-freq 392))
         ((equal? "Ab" note)   (set! note-freq 415.30))
-        ((equal? "A+" note)   (set! note-freq 440)))
+        ((equal? "A+" note)   (set! note-freq 440))
+        ((equal? "Bb+" note)   (set! note-freq 466.16))
+        ((equal? "B+" note)   (set! note-freq 493.188))
+        ((equal? "C+" note)   (set! note-freq 523.26))
+        
+        
+        
+        
+        )
+  
+ ; (cond (   (equal? )     ()   ) )
+ ; (set! note-freq (* note-freq 2))
   
   (my-play note-freq vol time))
 
@@ -200,50 +352,73 @@
   (cond ((equal? (radio-check wave-box) "Sine Wave")     sine-wave)
         ((equal? (radio-check wave-box) "Sawtooth Wave") sawtooth-wave)
         ((equal? (radio-check wave-box) "Square Wave")   square-wave)
-        ((equal? (radio-check wave-box) "Pulse Wave")    sine-wave)))
+        ((equal? (radio-check wave-box) "Pulse Wave")    pulse-wave)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define my-pulse-wave 
-  (lambda (x)
-  (pulse-wave 1 x)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(define (my-play freq vol time)
-  (if (<= numOfSounds 4)
-  (begin
-  (set! numOfSounds (+ 1 numOfSounds))
-  (addSound freq)
-  
-  (if (and (< freq 1721)(< 149 freq))
-  (let ([signal (network ()
-                  [a <= (get-wave-type) freq]
-                  [out = (* .1 vol a)])]) 
+(define getPulse
+  (lambda ()
     
-    (signal-play signal))
-    (display "Frequency out of range, must be between 150 and 1720 Hz.")))
+    
+  (send pulseSlide get-value))
   
-    (begin 
-      (newline)
-      (display "Too many sounds!"))))
+  )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;HOME BASE
+(define (my-play relFreq vol time)
+
+(let ([freq   (* octave relFreq)])  
   
+  
+  (if (and (< freq 1721)(< 109 freq))
+      (begin
+        (if (<= numOfSounds 4)
+            (begin
+              (set! numOfSounds (+ 1 numOfSounds))
+              (addSound freq)
+              (if (equal? (radio-check wave-box) "Pulse Wave") 
+                  (begin
+                    (let ([signal (network ()
+                                     [a <= pulse-wave (/ (getPulse) 100) freq]
+                                     [out = (* .1 vol a)])]) 
+                    (signal-play signal)))
+              (begin    
+                  (cond((equal? (radio-check wave-box) "Sine Wave")(set! vol (* vol 5))))
+                  (let ([signal (network ()
+                                     [a <= (get-wave-type) freq]
+                                     [out = (* .1 vol a)])]) 
+                  (signal-play signal)))))
+            (begin 
+              (newline)
+              (display "Too many sounds!"))))
+(display "Frequency out of range, must be between 109 and 1720 Hz.")))
+  
+  
+  
+  
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  (define (keySound char)
-   (myStop)
+   
+   
+   (cond ((not(send sustainCheck-Box get-value)) (myStop)))
    ;(display char)
    
-   (cond ((equal? "a" char) (play-Note "A" 1 2))
-         ((equal? "w" char) (play-Note "Bb" 1 2))
-         ((equal? "s" char) (play-Note "B" 1 2))
-         ((equal? "e" char) (play-Note "C" 1 2))
-         ((equal? "d" char) (play-Note "Db" 1 2))
-         ((equal? "f" char) (play-Note "D" 1 2))
-         ((equal? "t" char) (play-Note "Eb" 1 2))
-         ((equal? "g" char) (play-Note "E" 1 2))
-         ((equal? "y" char) (play-Note "F" 1 2))
-         ((equal? "h" char) (play-Note "Gb" 1 2))
-         ((equal? "u" char) (play-Note "G" 1 2))
-         ((equal? "j" char) (play-Note "Ab" 1 2))
-         ((equal? "k" char) (play-Note "A+" 1 2))
+   (cond ((equal? "a" char) (play-Note "C" 1 2))
+         ((equal? "w" char) (play-Note "Db" 1 2))
+         ((equal? "s" char) (play-Note "D" 1 2))
+         ((equal? "e" char) (play-Note "Eb" 1 2))
+         ((equal? "d" char) (play-Note "E" 1 2))
+         ((equal? "f" char) (play-Note "F" 1 2))
+         ((equal? "t" char) (play-Note "Gb" 1 2))
+         ((equal? "g" char) (play-Note "G" 1 2))
+         ((equal? "y" char) (play-Note "Ab" 1 2))
+         ((equal? "h" char) (play-Note "A+" 1 2))
+         ((equal? "u" char) (play-Note "Bb+" 1 2))
+         ((equal? "j" char) (play-Note "B+" 1 2))
+         ((equal? "k" char) (play-Note "C+" 1 2))
+         ((equal? "z" char) (octave-shift 'down))
+         ((equal? "x" char) (octave-shift 'up))
          ((equal? " " char) (myStop))))
    
 
