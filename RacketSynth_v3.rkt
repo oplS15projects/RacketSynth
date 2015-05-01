@@ -290,7 +290,7 @@
                     (begin
                       (let ([signal (network ()
                                              [a <= pulse-wave (/ (getPulse) 100) freq]
-                                             [out = (* .1 vol a)])])
+                                             [out = (* 1 vol a)])])
                         (signal-play signal)))
                     (begin
                       (cond((equal? (radio-check wave-box) "Sine Wave")(set! vol (* vol 10))))
