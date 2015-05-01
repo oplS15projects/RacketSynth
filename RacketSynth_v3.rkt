@@ -8,8 +8,15 @@
 (require rsound)
 
 ;;Main window to store the GUI
-(define mainWindow (new frame% [label "RacketSynth"]
+(define mainWindow (new frame% 
+                        [label "RacketSynth"]
                         [style (list 'no-resize-border)]))
+
+
+                 
+
+(define keyBitMap (read-bitmap "./images/keymap.png"))
+
 
 ;;Main panel to organize GUI
 (define mainCont (new horizontal-panel% 
@@ -22,6 +29,14 @@
 ;Right panel to store input types.
 (define rightPanel (new vertical-panel% 
                         [parent mainCont]))
+
+(define bottomPanel (new horizontal-panel% 
+                         [parent mainWindow]))
+
+(define mapMsg (new message% 
+                    [label keyBitMap]
+                    [parent bottomPanel]))
+
 
 ;Used to display the radio box for selecting wave types
 (define wavePanel (new group-box-panel% 
@@ -249,6 +264,7 @@
                                                          (send octavePanel show #f)
                                                          (send currSounds-msg show #t)
                                                          (send freq-message show #t)
+                                                         (send mapMsg show #f)
                                                          (send octMsg show #f)))
           
           ((equal? (radio-check freq-box) "Notes") (begin
@@ -260,6 +276,7 @@
                                                      (send octavePanel show #t)
                                                      (send currSounds-msg show #t)
                                                      (send freq-message show #f)
+                                                     (send mapMsg show #f)
                                                      (send octMsg show #t)))
           
           ((equal? (radio-check freq-box) "Keyboard") (begin
@@ -270,6 +287,7 @@
                                                         (send buttonPanel show #f)
                                                         (send octavePanel show #t)
                                                         (send freq-message show #f)
+                                                        (send mapMsg show #t)
                                                         (send currSounds-msg show (send sustainCheck-Box get-value))
                                                         (send octMsg show #t))))))
 
@@ -282,6 +300,7 @@
 (send pulseSlide show #f)
 (send keyInput show #f)
 (send mainWindow show #t)
+(send mapMsg show #f)
 (define numOfSounds 0)
 
 ;**************************Abstraction barrier (sort-of)*************************************************
