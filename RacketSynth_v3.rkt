@@ -4,32 +4,40 @@
 (require racket/include)
 (require rsound)
 
-
+;;Main window to store the GUI
 (define mainWindow (new frame% [label "RacketSynth"]
                         [style (list 'no-resize-border)]))
 
-
-;; Panel to contain the 'click here' and 'clear' buttons
+;;Main panel to organize GUI
 (define mainCont (new horizontal-panel% 
                       [parent mainWindow]))
 
+;Left panel to store wave types and current sounds.
 (define leftPanel (new vertical-panel% 
                        [parent mainCont]))
 
+;Right panel to store input types.
 (define rightPanel (new vertical-panel% 
                         [parent mainCont]))
 
+;Used to display the radio box for selecting wave types
 (define wavePanel (new group-box-panel% 
                        [parent leftPanel]
                        [label ""]))
 
+;Used to store main input types.
 (define freqPanel (new group-box-panel% 
                        [parent rightPanel]
                        [label ""]
                        [min-height 80]))
 
+(define freq-message (new message%
+                          [label "Enter a frequency between 109 and"]
+                          (parent rightPanel)))
+                          
+                          
 (define freq-field (new text-field%
-                        [label "Enter a frequency:"]
+                        [label "1721 Hz:"]
                         (parent rightPanel)
                         (init-value "440")
                         [callback (lambda (text event)
@@ -40,6 +48,10 @@
                         [parent leftPanel]
                         [min-value 1]
                         [max-value 100]))
+
+(define currSounds-msg (new message%
+                          [label "You may have up to 7 sounds at once."]
+                          (parent leftPanel)))
 
 (define buttonPanel (new horizontal-panel% [parent rightPanel]))
 
@@ -101,6 +113,7 @@
 (define sustainCheck-Box (new check-box%
                               (parent keyInputPanel)
                               (label "Allow multiple notes?")
+                              [callback (lambda(check-box event) (updateGUI))]
                               (value #f)))
 
 
@@ -211,6 +224,7 @@
                                                          (send sustainCheck-Box show #f)
                                                          (send buttonPanel show #t)
                                                          (send octavePanel show #f)
+                                                         (send currSounds-msg show #t)
                                                          (send octMsg show #f)))
           
           ((equal? (radio-check freq-box) "Notes") (begin
@@ -220,6 +234,7 @@
                                                      (send sustainCheck-Box show #f)
                                                      (send buttonPanel show #t)
                                                      (send octavePanel show #t)
+                                                     (send currSounds-msg show #t)
                                                      (send octMsg show #t)))
           
           ((equal? (radio-check freq-box) "Keyboard") (begin
@@ -229,6 +244,7 @@
                                                         (send sustainCheck-Box show #t)
                                                         (send buttonPanel show #f)
                                                         (send octavePanel show #t)
+                                                        (send currSounds-msg show (send sustainCheck-Box get-value))
                                                         (send octMsg show #t))))))
 
 
@@ -282,7 +298,7 @@
   (let ([freq (* octave relFreq)])
     (if (and (< freq 1721)(< 109 freq))
         (begin
-          (if (<= numOfSounds 7)
+          (if (<= numOfSounds 6)
               (begin
                 (set! numOfSounds (+ 1 numOfSounds))
                 (addSound freq)
@@ -290,7 +306,7 @@
                     (begin
                       (let ([signal (network ()
                                              [a <= pulse-wave (/ (getPulse) 100) freq]
-                                             [out = (* 1 vol a)])])
+                                             [out = (* .7 vol a)])])
                         (signal-play signal)))
                     (begin
                       (cond((equal? (radio-check wave-box) "Sine Wave")(set! vol (* vol 10))))
@@ -343,6 +359,9 @@
 (define currSound6 (new message%
                         [label filler]
                         [parent currentSounds]))
+(define currSound7 (new message%
+                        [label filler]
+                        [parent currentSounds]))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define soundList '())
 ; Needs to list sounds
@@ -356,7 +375,8 @@
           ((= numOfSounds 3)(send currSound3 set-label (getSoundString freq)))
           ((= numOfSounds 4)(send currSound4 set-label (getSoundString freq)))
           ((= numOfSounds 5)(send currSound5 set-label (getSoundString freq)))
-          ((= numOfSounds 6)(send currSound6 set-label (getSoundString freq))))))
+          ((= numOfSounds 6)(send currSound6 set-label (getSoundString freq)))
+          ((= numOfSounds 7)(send currSound7 set-label (getSoundString freq))))))
 
 (define (getSoundString freq)
   (string-append "Now playing a " (radio-check wave-box) " at " (number->string freq) " hertz."))
@@ -369,6 +389,7 @@
     (send currSound4 set-label filler)
     (send currSound5 set-label filler)
     (send currSound6 set-label filler)
+    (send currSound7 set-label filler)
     (set! soundList '())
     (set! numOfSounds 0)
     (stop)))
