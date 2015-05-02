@@ -7,7 +7,7 @@ Easy to use synthesizer for Racket
 RacketSynth is a module for Racket that creates an easy to use interface for creating sound using the Rsound and Racket GUI
 libraries. It accomplishes this by wrapping the complicated Rsound function with an easy to use GUI. The current version of Milestone_v3.rkt relies on having a folder called images containing the relevant images as a sub-folder in the directory that contains the RacketSynth program.
 
-#Accomplishments
+##Assessment 
 
 ###From our feasbility report:
 
@@ -16,6 +16,8 @@ libraries. It accomplishes this by wrapping the complicated Rsound function with
 We will also create a way for the frequencies to be set by mapping keyboard inputs to particular values. This will allow a user to use their computer's keyboard as a playable instrument.
 
 We will show all of the working freatures in our final demonstration."
+
+###Accomplishments
 
 Every single one of these goals has been met. 
 
