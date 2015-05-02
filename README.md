@@ -19,7 +19,7 @@ We will show all of the working freatures in our final demonstration."
 
 ###Accomplishments
 
-Every single one of these goals has been met. 
+Every single one of the above goals has been met. 
 
 Users can easily create sound waves of any of the 4 mentioned types at whatever frequency they choose, within reasonable limits. Sounds can be layered. Currently we allow for 7 simultaneous sounds to be played and stacked. However, this limit of 7 sounds was chosen arbitrarily and we can easily increase this limit or remove it all together. This was simply added to prevent a user from purposley breaking the program. 
 
