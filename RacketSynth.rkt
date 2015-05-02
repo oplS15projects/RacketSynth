@@ -14,7 +14,7 @@
 
 
                  
-
+;Image of keyboard map. 
 (define keyBitMap (read-bitmap "./images/keymap.png"))
 
 
@@ -30,9 +30,11 @@
 (define rightPanel (new vertical-panel% 
                         [parent mainCont]))
 
+;Panel to store keyboard map.
 (define bottomPanel (new horizontal-panel% 
                          [parent mainWindow]))
 
+;Message field to display keyboard map. 
 (define mapMsg (new message% 
                     [label keyBitMap]
                     [parent bottomPanel]))
