@@ -17,6 +17,14 @@ We will also create a way for the frequencies to be set by mapping keyboard inpu
 
 We will show all of the working freatures in our final demonstration."
 
+###Evaluation of Results and Analysis
+[A summary of our results:](URL=http://s296.photobucket.com/user/kevinseeker10/media/results_table_zpsvjyklwjn.png.html)
+
+
+
+
+
+
 ###Accomplishments
 
 Every single one of the above goals has been met. 
